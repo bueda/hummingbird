@@ -26,8 +26,8 @@ if(process.env.DUOSTACK_DB_MYSQL) {
     config.mongo_password = components.auth.split(':')[1];
 }
 
-db = new mongo.Db('hummingbird', new mongo.Server(config.mongo_host,
-            config.mongo_port, {}), {});
+db = new mongo.Db(config.mongo_name || 'hummingbird',
+        new mongo.Server(config.mongo_host, config.mongo_port, {}), {});
 
 db.addListener("error", function(error) {
   console.log("Error connecting to mongo -- perhaps it isn't running?");
