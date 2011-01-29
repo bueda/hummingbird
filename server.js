@@ -16,8 +16,17 @@ try {
 }
 var config = JSON.parse(configJSON.toString());
 
-db = new mongo.Db('hummingbird', new mongo.Server(
-            process.env. DUOSTACK_DB_MONGODB || config.mongo_host,
+if(process.env.DUOSTACK_DB_MYSQL) {
+    var parseUrl = require('url').parse;
+    var components = parseUrl(process.env['DUOSTACK_DB_MYSQL']);
+    config.mongo_host = components.hostname;
+    config.mongo_post = components.port;
+    config.mongo_name = components.pathname.substr(1);
+    config.mongo_user = components.auth.split(':')[0];
+    config.mongo_password = components.auth.split(':')[1];
+}
+
+db = new mongo.Db('hummingbird', new mongo.Server(config.mongo_host,
             config.mongo_port, {}), {});
 
 db.addListener("error", function(error) {
@@ -25,6 +34,17 @@ db.addListener("error", function(error) {
 });
 
 db.open(function(p_db) {
+  if(config.mongo_user && config.mongo_password) {
+    db.authenticate(config.mongo_user, config.mongo_password,
+        function(err, success) {
+      if(success) {
+        callback(null, db);
+      } else {
+        console.log("Error authenticating with mongo");
+      }
+    });
+  }
+
   var hummingbird = new Hummingbird();
   hummingbird.init(db, function() {
     var server = http.createServer(function(req, res) {
