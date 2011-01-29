@@ -20,7 +20,7 @@ if(process.env.DUOSTACK_DB_MYSQL) {
     var parseUrl = require('url').parse;
     var components = parseUrl(process.env['DUOSTACK_DB_MYSQL']);
     config.mongo_host = components.hostname;
-    config.mongo_post = components.port;
+    config.mongo_port = components.port;
     config.mongo_name = components.pathname.substr(1);
     config.mongo_user = components.auth.split(':')[0];
     config.mongo_password = components.auth.split(':')[1];
