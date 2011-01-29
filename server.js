@@ -16,7 +16,9 @@ try {
 }
 var config = JSON.parse(configJSON.toString());
 
-db = new mongo.Db('hummingbird', new mongo.Server(config.mongo_host, config.mongo_port, {}), {});
+db = new mongo.Db('hummingbird', new mongo.Server(
+            process.env. DUOSTACK_DB_MONGODB || config.mongo_host,
+            config.mongo_port, {}), {});
 
 db.addListener("error", function(error) {
   console.log("Error connecting to mongo -- perhaps it isn't running?");
