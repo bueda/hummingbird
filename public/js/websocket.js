@@ -97,7 +97,7 @@ Hummingbird.WebSocket.prototype = {
       var wsPortParam = document.location.search.match(/ws_port=([^\&\#]+)/) || [];
       return wsPortParam;
     }
-    return 8000;
+    return 9000;
   }
 }
 
