@@ -2,7 +2,7 @@
   "name" : "Hummingbird",
 
   "tracking_port" : 9000,
-  "dashboard_port" : 8080,
+  "dashboard_port" : 9001,
 
   "mongo_host" : "localhost",
   "mongo_port" : 27017,
